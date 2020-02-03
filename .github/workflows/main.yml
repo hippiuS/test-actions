@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Update SHA
-      run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/site/_meta
+      run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/_meta
 
     - name: Build container image
       run: docker build -t hippius/rep:$(echo $GITHUB_SHA | head -c7) .
@@ -31,7 +31,7 @@ jobs:
       run: docker push hippius/rep
 
     - name: Update deployment file
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|hippius/rep:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|hippius/rep:'${TAG}'|' $GITHUB_WORKSPACE/deployment.yml
 
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@master
